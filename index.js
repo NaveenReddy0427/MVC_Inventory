@@ -2,6 +2,7 @@ import express from 'express'
 import path from "path"
 import ejsLayouts from "express-ejs-layouts"
 import productController from './src/controllers/product_Controller.js'
+import addProductValidationMiddleware from './src/middlewares/addProductValidation_Middleware.js'
 
 const server = express()
 
@@ -20,7 +21,7 @@ server.use(ejsLayouts)
 const ProductController = new productController()
 server.get('/', ProductController.getProducts)
 server.get('/new', ProductController.getAddProduct)
-server.post('/', ProductController.postAddProduct)
+server.post('/', addProductValidationMiddleware, ProductController.postAddProduct)
 
 server.use(express.static('src/views'))
 
