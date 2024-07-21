@@ -9,14 +9,49 @@ export default class productController{
         // return res.sendFile(path.join(path.resolve(), 'src', 'views', 'products.html'))
     }
 
-    getAddForm(req, res){
-        return res.render('newProduct')
+    // getAddForm(req, res){
+    //     return res.render('newProduct')
+    // }
+
+    getAddProduct(req, res){
+        return res.render('newProduct', {
+            errorMessage: null
+        })
     }
 
-    addNewProduct(req, res){
-        console.log(req.body)
+    postAddProduct(req, res){
+        const {name, price, imageUrl} = req.body
+        let errors = []
+        if(!name || name.trim() == ''){
+            errors.push('Name is required')
+        }
+        if(!price || parseFloat(price)<1){
+            errors.push('price value must be a positive')
+        }
+
+        try {
+            const validUrl = new URL(imageUrl)
+        } catch (error) {
+            errors.push('URL is invalid')
+        }
+
+        if(errors.length>0){
+            return res.render('newProduct', {
+                errorMessage: errors[0]
+            })
+        }
+        
         ProductModel.add(req.body)
         let products = ProductModel.get()
-        return res.render('products', {products:products})
+        res.render('products', {products:products})
     }
+
+    // addNewProduct(req, res){
+    //     console.log(req.body)
+    //     ProductModel.add(req.body)
+    //     let products = ProductModel.get()
+    //     return res.render('products', {products:products})
+    // }
+
+    
 }
