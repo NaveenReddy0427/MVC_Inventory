@@ -1,5 +1,6 @@
 export default class ProductModel{
 
+  // constructor initializes a new product with below properties
     constructor(_id, _name, _desc, _price, _imageUrl){
         this.id = _id;
         this.name = _name;
@@ -7,10 +8,13 @@ export default class ProductModel{
         this.price = _price;
         this.imageUrl = _imageUrl
     }
+
+    // Returns the list of all products.
     static get(){
         return products;
     }
 
+    // Adds a new product to the list.
     static add(productObj){
       const newProduct = new ProductModel(
         products.length + 1,
@@ -22,8 +26,24 @@ export default class ProductModel{
         products.push(newProduct)
     }
 
+    // Retrieves a product by its ID.
     static getProductById(id){
       return products.find((p) => p.id == id);
+    }
+
+    // Updates an existing product with new details.
+    static update(productObj) {
+      const index = products.findIndex(
+        (p) => p.id == productObj.id
+      );
+      products[index] = productObj;
+    }
+
+    static delete(id) {
+      const index = products.findIndex(
+        (p) => p.id == id
+      );
+      products.splice(index, 1);
     }
 }
 

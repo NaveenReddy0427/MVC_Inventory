@@ -6,6 +6,9 @@ import addProductValidationMiddleware from './src/middlewares/addProductValidati
 
 const server = express()
 
+// to render static js file
+server.use(express.static('public'))
+
 // parse form data
 server.use(express.urlencoded({extended: true}))
 
@@ -23,6 +26,8 @@ server.get('/', ProductController.getProducts)
 server.get('/new', ProductController.getAddProduct)
 server.post('/', addProductValidationMiddleware, ProductController.postAddProduct)
 server.get('/update-product/:id', ProductController.getProductViewByID)
+server.post('/update-product', ProductController.updateProduct)
+server.post('/delete-product/:id', ProductController.deleteProduct)
 
 server.use(express.static('src/views'))
 
