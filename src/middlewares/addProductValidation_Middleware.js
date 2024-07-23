@@ -1,24 +1,24 @@
+import { body, validationResult } from "express-validator"
 
+const addProductValidationMiddleware = async (req, res, next)=>{
+        
+        // setup rules for validation
+        const rules = [
+            body('name').notEmpty().withMessage('name is required'),
+            body('price').isFloat({gt:0}).withMessage('Price should be Positive'),
+            body('imageUrl').isURL().withMessage('Invalid URL')
+        ]
+        
 
-const addProductValidationMiddleware = (req, res, next)=>{
-    const {name, price, imageUrl} = req.body
-        let errors = []
-        if(!name || name.trim() == ''){
-            errors.push('Name is required')
-        }
-        if(!price || parseFloat(price)<1){
-            errors.push('price value must be a positive')
-        }
+        // run the rules 
+        await Promise.all(rules.map(rule=>rule.run(req)))
 
-        try {
-            const validUrl = new URL(imageUrl)
-        } catch (error) {
-            errors.push('URL is invalid')
-        }
+        // checking if there are any errors after running the rules
+        const validationErrors = validationResult(req)
 
-        if(errors.length>0){
+        if(!validationErrors.isEmpty()){
             return res.render('newProduct', {
-                errorMessage: errors[0]
+                errorMessage: validationErrors.array()[0].msg
             })
         }
         next()
