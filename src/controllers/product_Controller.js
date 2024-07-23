@@ -32,7 +32,7 @@ export default class productController{
     //     return res.render('products', {products:products})
     // }
 
-    updateProduct(req, res, next){
+    getProductViewByID(req, res, next){
        
         const id = req.params.id;
         const productFound = ProductModel.getProductById(id);
