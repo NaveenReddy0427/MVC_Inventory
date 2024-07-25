@@ -3,6 +3,7 @@ import path from "path"
 import ejsLayouts from "express-ejs-layouts"
 import productController from './src/controllers/product_Controller.js'
 import addProductValidationMiddleware from './src/middlewares/addProductValidation_Middleware.js'
+import { uploadFile } from './src/middlewares/fileUpload_Middleware.js'
 
 const server = express()
 
@@ -23,10 +24,11 @@ server.use(ejsLayouts)
 // Create an instance of ProductController
 const ProductController = new productController()
 server.get('/', ProductController.getProducts)
+
 server.get('/new', ProductController.getAddProduct)
-server.post('/', addProductValidationMiddleware, ProductController.postAddProduct)
+server.post('/', uploadFile.single('imageUrl'), addProductValidationMiddleware, ProductController.postAddProduct)
 server.get('/update-product/:id', ProductController.getProductViewByID)
-server.post('/update-product', ProductController.updateProduct)
+server.post('/update-product', uploadFile.single('imageUrl'), ProductController.updateProduct)
 server.post('/delete-product/:id', ProductController.deleteProduct)
 
 server.use(express.static('src/views'))

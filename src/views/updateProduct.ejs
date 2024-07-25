@@ -1,6 +1,6 @@
 <!-- views/add-product.ejs -->
 
-<h1 class="mt-5 mb-4">Update Product</h1>
+<h1 class="mt-5 mb-4 header">Update Product</h1>
 
 <%if(errorMessage){ %>
 <div class="alert alert-danger" role="alert">
@@ -8,7 +8,7 @@
 </div>
 <%}%>
 
-<form action="/update-product" method="post">
+<form action="/update-product" method="post" enctype="multipart/form-data">
     <input type="hidden" class="form-control" id="id" name="id" value="<%= product.id %>">
     
     <div class="mb-3">
@@ -29,7 +29,7 @@
     </div>
     <div class="mb-3">
         <label for="imageUrl" class="form-label">Image URL</label>
-        <input type="text" class="form-control" id="imageUrl" name="imageUrl"
+        <input type="file" class="form-control" id="imageUrl" name="imageUrl" accept="images/*"
         value="<%= product.imageUrl %>">
     </div>
     <button type="submit" class="btn btn-primary">Update Product</button>

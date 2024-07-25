@@ -6,7 +6,13 @@ const addProductValidationMiddleware = async (req, res, next)=>{
         const rules = [
             body('name').notEmpty().withMessage('name is required'),
             body('price').isFloat({gt:0}).withMessage('Price should be Positive'),
-            body('imageUrl').isURL().withMessage('Invalid URL')
+            // body('imageUrl').isURL().withMessage('Invalid URL')
+            body('imageUrl').custom((value, {req})=>{
+                if(!req.file){
+                    throw new Error('Image is required')
+                }
+                return true
+            })
         ]
         
 

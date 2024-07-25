@@ -19,11 +19,14 @@ export default class productController{
         })
     }
 
-    postAddProduct(req, res){
-        ProductModel.add(req.body)
-        let products = ProductModel.get()
-        res.render('products', {products:products})
-    }
+    postAddProduct(req, res, next) {
+        const { name, desc, price } = req.body;
+        const imageUrl =
+          'images/' + req.file.filename;
+        ProductModel.add(name, desc, price, imageUrl);
+        var products = ProductModel.get();
+        res.render('products', { products });
+      }
 
     // addNewProduct(req, res){
     //     console.log(req.body)
@@ -48,8 +51,25 @@ export default class productController{
         }
     }
 
-    updateProduct(req, res){
-        ProductModel.update(req.body)
+    updateProduct(req, res) {
+        const { id, name, desc, price } = req.body;
+        let product = ProductModel.getProductById(id);
+
+        if (!product) {
+            return res.status(401).send('Product not found');
+        }
+
+        const imageUrl = req.file ? 'images/' + req.file.filename : product.imageUrl;
+
+        const updatedProduct = {
+            id: parseInt(id, 10),
+            name,
+            desc,
+            price,
+            imageUrl
+        };
+
+        ProductModel.update(updatedProduct);
         var products = ProductModel.get();
         res.render('products', { products });
     }

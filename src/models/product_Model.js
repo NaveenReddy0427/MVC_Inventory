@@ -15,15 +15,15 @@ export default class ProductModel{
     }
 
     // Adds a new product to the list.
-    static add(productObj){
-      const newProduct = new ProductModel(
+    static add(name, desc, price, imageUrl) {
+      let newProduct = new ProductModel(
         products.length + 1,
-        productObj.name, 
-        productObj.desc, 
-        productObj.price, 
-        productObj.imageUrl)
-        
-        products.push(newProduct)
+        name,
+        desc,
+        price,
+        imageUrl
+      );
+      products.push(newProduct);
     }
 
     // Retrieves a product by its ID.
@@ -33,11 +33,14 @@ export default class ProductModel{
 
     // Updates an existing product with new details.
     static update(productObj) {
-      const index = products.findIndex(
-        (p) => p.id == productObj.id
-      );
-      products[index] = productObj;
-    }
+      const index = products.findIndex((p) => p.id == productObj.id);
+      if (index !== -1) {
+          products[index] = {
+              ...products[index],
+              ...productObj
+          };
+      }
+     }
 
     static delete(id) {
       const index = products.findIndex(
