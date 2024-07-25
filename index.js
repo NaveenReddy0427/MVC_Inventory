@@ -4,6 +4,7 @@ import ejsLayouts from "express-ejs-layouts"
 import productController from './src/controllers/product_Controller.js'
 import addProductValidationMiddleware from './src/middlewares/addProductValidation_Middleware.js'
 import { uploadFile } from './src/middlewares/fileUpload_Middleware.js'
+import userController from './src/controllers/user_Controller.js'
 
 const server = express()
 
@@ -30,6 +31,12 @@ server.post('/', uploadFile.single('imageUrl'), addProductValidationMiddleware, 
 server.get('/update-product/:id', ProductController.getProductViewByID)
 server.post('/update-product', uploadFile.single('imageUrl'), ProductController.updateProduct)
 server.post('/delete-product/:id', ProductController.deleteProduct)
+
+
+// create an instance for userController
+const UserController = new userController()
+
+server.get('/register', UserController.getRegister)
 
 server.use(express.static('src/views'))
 
