@@ -50,6 +50,7 @@ server.get('/register', UserController.getRegister)
 server.get('/login', UserController.getLogin)
 server.post('/login', UserController.postLogin)
 server.post('/register', UserController.postRegister)
+server.get('/logout', UserController.logout)
 
 server.use(express.static('src/views'))
 

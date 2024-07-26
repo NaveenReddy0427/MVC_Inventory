@@ -34,12 +34,18 @@
                     <li>
                         <a class="nav-link active" aria-current="page" href="/new">New Product</a>
                     </li>
+                    <% if(locals.userEmail) {%>
+                        <li>
+                            <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                        </li>
+                    <% } else {%>
                     <li>
                         <a class="nav-link active" aria-current="page" href="/register">Register</a>
                     </li>
                     <li>
                         <a class="nav-link active" aria-current="page" href="/login">Login</a>
                     </li>
+                    <% } %>
                 </ul>
             </div>
         </div>

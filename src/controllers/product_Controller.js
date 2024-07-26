@@ -3,7 +3,7 @@ import ProductModel from "../models/product_Model.js"
 export default class productController{
     getProducts(req, res, next){
         let products = ProductModel.get()
-        res.render('products', {products:products})
+        res.render('products', {products, userEmail: req.session.userEmail})
         // return res.sendFile(path.join(path.resolve(), 'src', 'views', 'products.html'))
     }
 
@@ -13,7 +13,8 @@ export default class productController{
 
     getAddProduct(req, res, next){
         return res.render('newProduct', {
-            errorMessage: null
+            errorMessage: null,
+            userEmail: req.session.userEmail
         })
     }
 
@@ -23,7 +24,7 @@ export default class productController{
           'images/' + req.file.filename;
         ProductModel.add(name, desc, price, imageUrl);
         var products = ProductModel.get();
-        res.render('products', { products });
+        res.render('products', { products, userEmail: req.session.userEmail });
     }
 
     // addNewProduct(req, res){
@@ -41,6 +42,7 @@ export default class productController{
         res.render('updateProduct', {
             product: productFound,
             errorMessage: null,
+            userEmail: req.session.userEmail
         });
         }
     // 2. else return errors.
