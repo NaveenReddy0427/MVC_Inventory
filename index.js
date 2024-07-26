@@ -6,10 +6,14 @@ import addProductValidationMiddleware from './src/middlewares/addProductValidati
 import { uploadFile } from './src/middlewares/fileUpload_Middleware.js'
 import userController from './src/controllers/user_Controller.js'
 
+
 const server = express()
 
 // to render static js file
 server.use(express.static('public'))
+
+// configure the session 
+
 
 // parse form data
 server.use(express.urlencoded({extended: true}))
@@ -21,11 +25,12 @@ server.set('views', path.join(path.resolve(), 'src', 'views'))
 
 //ejs layout middleware
 server.use(ejsLayouts)
+server.use(express.json())
 
 // Create an instance of ProductController
 const ProductController = new productController()
-server.get('/', ProductController.getProducts)
 
+server.get('/', ProductController.getProducts)
 server.get('/new', ProductController.getAddProduct)
 server.post('/', uploadFile.single('imageUrl'), addProductValidationMiddleware, ProductController.postAddProduct)
 server.get('/update-product/:id', ProductController.getProductViewByID)
@@ -35,8 +40,10 @@ server.post('/delete-product/:id', ProductController.deleteProduct)
 
 // create an instance for userController
 const UserController = new userController()
-
 server.get('/register', UserController.getRegister)
+server.get('/login', UserController.getLogin)
+server.post('/login', UserController.postLogin)
+server.post('/register', UserController.postRegister)
 
 server.use(express.static('src/views'))
 

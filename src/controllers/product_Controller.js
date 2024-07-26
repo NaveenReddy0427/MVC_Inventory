@@ -1,10 +1,8 @@
-import path from "path"
 import ProductModel from "../models/product_Model.js"
 
 export default class productController{
-    getProducts(req, res){
+    getProducts(req, res, next){
         let products = ProductModel.get()
-        console.log(products);
         res.render('products', {products:products})
         // return res.sendFile(path.join(path.resolve(), 'src', 'views', 'products.html'))
     }
@@ -13,7 +11,7 @@ export default class productController{
     //     return res.render('newProduct')
     // }
 
-    getAddProduct(req, res){
+    getAddProduct(req, res, next){
         return res.render('newProduct', {
             errorMessage: null
         })
@@ -26,7 +24,7 @@ export default class productController{
         ProductModel.add(name, desc, price, imageUrl);
         var products = ProductModel.get();
         res.render('products', { products });
-      }
+    }
 
     // addNewProduct(req, res){
     //     console.log(req.body)
