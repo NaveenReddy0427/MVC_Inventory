@@ -5,7 +5,8 @@ import productController from './src/controllers/product_Controller.js'
 import addProductValidationMiddleware from './src/middlewares/addProductValidation_Middleware.js'
 import { uploadFile } from './src/middlewares/fileUpload_Middleware.js'
 import userController from './src/controllers/user_Controller.js'
-
+import session from 'express-session';
+import auth from './src/middlewares/authMiddleware.js'
 
 const server = express()
 
@@ -13,7 +14,12 @@ const server = express()
 server.use(express.static('public'))
 
 // configure the session 
-
+server.use(session({
+    secret:'SecretKey',
+    resave: false,
+    saveUninitialized: true,
+    cookie:{secure:false},
+}));
 
 // parse form data
 server.use(express.urlencoded({extended: true}))
@@ -30,12 +36,12 @@ server.use(express.json())
 // Create an instance of ProductController
 const ProductController = new productController()
 
-server.get('/', ProductController.getProducts)
-server.get('/new', ProductController.getAddProduct)
-server.post('/', uploadFile.single('imageUrl'), addProductValidationMiddleware, ProductController.postAddProduct)
-server.get('/update-product/:id', ProductController.getProductViewByID)
-server.post('/update-product', uploadFile.single('imageUrl'), ProductController.updateProduct)
-server.post('/delete-product/:id', ProductController.deleteProduct)
+server.get('/', auth, ProductController.getProducts)
+server.get('/new', auth, ProductController.getAddProduct)
+server.post('/', auth, uploadFile.single('imageUrl'), addProductValidationMiddleware, ProductController.postAddProduct)
+server.get('/update-product/:id', auth, ProductController.getProductViewByID)
+server.post('/update-product', auth, uploadFile.single('imageUrl'), ProductController.updateProduct)
+server.post('/delete-product/:id', auth, ProductController.deleteProduct)
 
 
 // create an instance for userController
