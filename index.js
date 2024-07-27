@@ -7,6 +7,8 @@ import { uploadFile } from './src/middlewares/fileUpload_Middleware.js'
 import userController from './src/controllers/user_Controller.js'
 import session from 'express-session';
 import auth from './src/middlewares/authMiddleware.js'
+import cookieParser from 'cookie-parser'
+import lastVisit from './src/middlewares/cookieMiddleware.js'
 
 const server = express()
 
@@ -20,6 +22,10 @@ server.use(session({
     saveUninitialized: true,
     cookie:{secure:false},
 }));
+
+// configure cookie
+server.use(cookieParser())
+server.use(lastVisit)
 
 // parse form data
 server.use(express.urlencoded({extended: true}))
