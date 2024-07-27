@@ -25,7 +25,7 @@ server.use(session({
 
 // configure cookie
 server.use(cookieParser())
-server.use(lastVisit)
+// server.use(lastVisit)
 
 // parse form data
 server.use(express.urlencoded({extended: true}))
@@ -42,7 +42,7 @@ server.use(express.json())
 // Create an instance of ProductController
 const ProductController = new productController()
 
-server.get('/', auth, ProductController.getProducts)
+server.get('/', lastVisit, auth, ProductController.getProducts)
 server.get('/new', auth, ProductController.getAddProduct)
 server.post('/', auth, uploadFile.single('imageUrl'), addProductValidationMiddleware, ProductController.postAddProduct)
 server.get('/update-product/:id', auth, ProductController.getProductViewByID)
